@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# check for root
+if [ $UID != "0" ]
+then
+   echo "quickstatd can only run with rootly privileges"
+   exit 1
+fi
+
+ACTION=$1
+if [ "$ACTION" == "" ]
+then
+   echo "Usage:  quickstatd start | stop | restart"
+   exit 1
+fi
+
+CONFIG_FILE="/etc/quickstatd.conf"
+. $CONFIG_FILE
+
+
+function start() {
+   # check for previously running quickstatd
+   if [ -f "$PID_FILE" ]
+   then
+      echo "quickstatd was already running.  No action taken."
+      exit 1
+   fi 
+   # run it!
+   echo "Starting"
+   SCRIPT_DIR="$QUICKSTATD_HOME/metric.d"
+   for METRIC in $metrics
+   do
+      $SCRIPT_DIR/$METRIC.sh $CONFIG_FILE &
+      echo $! >> $PID_FILE
+   done
+}
+
+
+
+function stop() {
+   # Be sure quickstatd is running
+   if [ ! -f "$PID_FILE" ]
+   then
+      echo "quickstatd was not running.  No action taken."
+      exit 1
+   fi
+   echo "Stopping"
+   for PID in $(cat $PID_FILE)
+   do
+      kill -15 $PID > /dev/null 2>&1
+   done
+   rm $PID_FILE
+}
+
+
+
+if [ "$ACTION" == "start" ]
+then
+   start
+fi
+
+if [ "$ACTION" == "stop" ]
+then
+   stop
+fi
+
+if [ $ACTION == "restart" ]
+then
+   stop
+   start
+fi
+
