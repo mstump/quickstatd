@@ -2,42 +2,41 @@
 quickstatd gathers OS-level performance statistics and sends
 them to a running instance of Graphite.
 
-quickstatd is not the most efficient way to get monitoring done.
 It is a collection of bash shell scripts that gather the output
 from existing system monitoring tools like vmstat, sar, and iostat,
 and forwards the data on to Graphite where it can be
 visualized.
 
-I wrote for the following reasons:
+There are other, more "production-ready" tools (like collectd, with
+the graphite plugin) that do this.  I wrote for the following reasons:
 
-  * I wanted something simple I could get up and running fast, with
-    minimal fuss and configuration.
+  * I didn't need a ton of options, but I did want something simple I
+    could get up and running fast, with minimal fuss and configuration.
 
   * I wanted something I could easily push into an environment that
     has no internet access.  Installing .deb or .rpm packages was
     problematic due to long dependancy chains of existing tools.
 
-For a more robust, production-ready monitoring solution, look at
-alternatives like collectd (with graphite plugin).
 
 Quickstatd is tested and works on CentOS (Fedora) and Ubuntu
 (Debian).  With small modifications it could be made to work
-on OS X, Solaris, etc.  It is most suited to small environments or
-test installations.
+on OS X, Solaris, etc.  
 
 
 Prerequisites:
-    * the systat package must be installed if you wish to use the 
-      various 'sar' and 'iostat' monitoring tools.  (The vmstat
-      tools should work out of the box.)
+    * The systat package must be installed if you wish to use the 
+      'sar' and 'iostat' monitoring tools.  (The vmstat
+      tools should work out of the box for all distros)  CentOS seems
+      to have systat installed by default, but Debian/Ubuntu users
+      need to install it via apt-get.
 
 
 To install quickstatd, run installer.sh.  Usage:
 
-    install.sh <install dir> <graphite host> <monitor interval> [ graphite port (default is 2003) ]
+    sudo install.sh <install dir> <graphite host> <monitor interval> [ graphite port (default is 2003) ]
 
 
-Quickstatd is controlled by a standard tool in /etc/init.d.  Usage:
+Quickstatd is controlled by a startup script in /etc/init.d.  Usage:
 
     /etc/init.d/quickstatd  start | stop | restart
 
