@@ -8,14 +8,15 @@ and forwards the data on to Graphite where it can be
 visualized.
 
 There are other, more "production-ready" tools (like collectd, with
-the graphite plugin) that do this.  I wrote for the following reasons:
+the graphite plugin) that do this.  I wrote quickstatd for the
+following reasons:
 
   * I didn't need a ton of options, but I did want something simple I
     could get up and running fast, with minimal fuss and configuration.
 
   * I wanted something I could easily push into an environment that
-    has no internet access.  Installing .deb or .rpm packages was
-    problematic due to long dependancy chains of existing tools.
+    has no internet access.  Installing the .deb or .rpm packages for 
+    collectd was problematic due to long unmet dependancy chains.
 
 
 Quickstatd is tested and works on CentOS (Fedora) and Ubuntu
