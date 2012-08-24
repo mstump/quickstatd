@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# check for root
-if [ $UID != "0" ]
-then
-   echo "quickstatd can only run with rootly privileges"
-   exit 1
-fi
-
 ACTION=$1
 if [ "$ACTION" == "" ]
 then
@@ -14,7 +7,20 @@ then
    exit 1
 fi
 
-CONFIG_FILE="/etc/quickstatd.conf"
+if [ -f "/etc/quickstatd.conf" ]
+then
+   CONFIG_FILE="/etc/quickstatd.conf"
+fi
+if [ -f "./quickstatd.conf" ]
+then
+   CONFIG_FILE="./quickstatd.conf"
+fi
+
+if [ ! -f "$CONFIG_FILE" ]
+then
+   echo "FATAL: config file '$CONFIG_FILE' not found."
+   exit 1
+fi
 . $CONFIG_FILE
 
 

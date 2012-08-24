@@ -1,10 +1,22 @@
 #!/bin/bash
 
+# get the install dir on the cmd line
+INSTALL_DIR=$1
+GRAPHITE_HOST=$2
+MONITOR_INTERVAL=$3
+GRAPHITE_PORT=$4
+DEFAULT_GRAPHITE_PORT="2003"
+
+CONFIG="$INSTALL_DIR/quickstatd.conf"
+PID_FILE="$INSTALL_DIR/.quickstatd.pid"
+INIT_DIR="$INSTALL_DIR"
+
 # check for root
-if [ $UID != "0" ]
+if [ $UID == "0" ]
 then
-   echo "The installer can only run with rootly privileges"
-   exit 1
+   CONFIG="/etc/quickstatd.conf"
+   PID_FILE="/var/run/.quickstatd.pid"
+   INIT_DIR="/etc/init.d"
 fi
 
 # check for current directory
@@ -13,14 +25,6 @@ then
    echo "Installer must be run from the quickstatd directory."
    exit 1
 fi
-
-DEFAULT_GRAPHITE_PORT="2003"
-# get the install dir on the cmd line
-INSTALL_DIR=$1
-GRAPHITE_HOST=$2
-MONITOR_INTERVAL=$3
-GRAPHITE_PORT=$4
-CONFIG="/etc/quickstatd.conf"
 
 if [ "$MONITOR_INTERVAL" == "" ]
 then
@@ -33,18 +37,28 @@ then
    GRAPHITE_PORT=$DEFAULT_GRAPHITE_PORT
 fi
 
-echo "QUICKSTATD_HOME=$INSTALL_DIR" > $CONFIG
+echo "Installing quickstatd."
+echo "   INSTALL_DIR: $INSTALL_DIR"
+echo "   GRAPHITE_HOST: $GRAPHITE_HOST"
+echo "   MONITOR_INTERVAL: $MONITOR_INTERVAL"
+echo "   GRAPHITE_PORT: $GRAPHITE_PORT"
+echo "   CONFIG: $CONFIG"
+echo "   PID_FILE: $PID_FILE"
+echo "   INIT_DIR: $INIT_DIR"
+
+echo "QUICKSTATD_HOME=\"$INSTALL_DIR\"" > $CONFIG
+echo "PID_FILE=\"$PID_FILE\"" >> $CONFIG
 echo >> $CONFIG
 
 # copy bits to new dir
 cp -r awk $INSTALL_DIR
 cp -r metric.d $INSTALL_DIR
 cat conf/quickstatd.conf >> $CONFIG
-cp quickstatd /etc/init.d
+cp quickstatd $INIT_DIR
 
-echo "graphite_host=$GRAPHITE_HOST" >> $CONFIG
-echo "graphite_port=$GRAPHITE_PORT" >> $CONFIG
-echo "graphite_interval_seconds=$MONITOR_INTERVAL" >> $CONFIG
+echo "graphite_host=\"$GRAPHITE_HOST\"" >> $CONFIG
+echo "graphite_port=\"$GRAPHITE_PORT\"" >> $CONFIG
+echo "graphite_interval_seconds=\"$MONITOR_INTERVAL\"" >> $CONFIG
 
 
 #if ! sar 1 1 > /dev/null 2>&1
