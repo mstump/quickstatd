@@ -26,6 +26,13 @@ then
    exit 1
 fi
 
+# check for netcat
+if ! which nc > /dev/null
+then
+   echo "FATAL: netcat ('nc') not installed."
+   exit 1
+fi
+
 if [ "$MONITOR_INTERVAL" == "" ]
 then
    echo "Usage: install.sh <install dir> <graphite host> <monitor interval seconds> [ graphite port (default=2003) ]"
