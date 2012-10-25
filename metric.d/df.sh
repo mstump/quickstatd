@@ -13,5 +13,5 @@ CONFIG_FILE=$1
 HOSTNAME=$(hostname -s)
 
 echo "Launching df monitoring, reporting data to $graphite_host"
-repeat "df -h | gawk -f $QUICKSTATD_HOME/awk/df.awk hostname=$HOSTNAME graphite_host=$graphite_host graphite_port=$graphite_port"
+repeat "df -hP | gawk -f $QUICKSTATD_HOME/awk/df.awk hostname=$HOSTNAME graphite_host=$graphite_host graphite_port=$graphite_port"
  
