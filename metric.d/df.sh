@@ -10,8 +10,7 @@ function repeat {
 
 CONFIG_FILE=$1
 . $CONFIG_FILE
-HOSTNAME=$(hostname -s)
+HOSTNAME=$(hostname|sed 's/\./_/g')
 
 echo "Launching df monitoring, reporting data to $graphite_host"
 repeat "df -hP | gawk -f $QUICKSTATD_HOME/awk/df.awk hostname=$HOSTNAME graphite_host=$graphite_host graphite_port=$graphite_port"
- 
