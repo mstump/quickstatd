@@ -11,13 +11,13 @@
    if ($3=="IFACE") {
    }
    else {
-      print "servers." hostname ".sar.network." $3 ".rxpck_persec " $4 " " systime() | "nc " graphite_host " " graphite_port
-      print "servers." hostname ".sar.network." $3 ".txpck_persec " $5 " " systime() | "nc " graphite_host " " graphite_port
-      print "servers." hostname ".sar.network." $3 ".rx_" units "_persec " $6 " " systime() | "nc " graphite_host " " graphite_port
-      print "servers." hostname ".sar.network." $3 ".tx_" units "_persec " $7 " " systime() | "nc " graphite_host " " graphite_port
-      print "servers." hostname ".sar.network." $3 ".rxcmp_persec " $8 " " systime() | "nc " graphite_host " " graphite_port
-      print "servers." hostname ".sar.network." $3 ".txcmp_persec " $9 " " systime() | "nc " graphite_host " " graphite_port
-      print "servers." hostname ".sar.network." $3 ".rxmcst_persec " $10 " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".sar.network." $3 ".rxpck_persec " $4 " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".sar.network." $3 ".txpck_persec " $5 " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".sar.network." $3 ".rx_" units "_persec " $6 " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".sar.network." $3 ".tx_" units "_persec " $7 " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".sar.network." $3 ".rxcmp_persec " $8 " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".sar.network." $3 ".txcmp_persec " $9 " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".sar.network." $3 ".rxmcst_persec " $10 " " systime() | "nc " graphite_host " " graphite_port
    }
 }
 

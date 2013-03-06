@@ -1,4 +1,4 @@
-#print "servers." hostname ".sar.load.runq-sz " $3 " " systime() | "nc " graphite_host " " graphite_port
+#print graphite_prefix ".servers." hostname ".sar.load.runq-sz " $3 " " systime() | "nc " graphite_host " " graphite_port
 # expects 'df -h' data in this format:
 # Filesystem            Size  Used Avail Use% Mounted on
 # /dev/sda1              39G  8.2G   29G  23% /
@@ -13,7 +13,7 @@
    }
    else {
       gsub(/\//, "_", $6)
-      print "servers." hostname ".df.use." $6 " " substr($5,0,length($5)-1) " " systime() | "nc " graphite_host " " graphite_port
+      print graphite_prefix ".servers." hostname ".df.use." $6 " " substr($5,0,length($5)-1) " " systime() | "nc " graphite_host " " graphite_port
    }
 }
 

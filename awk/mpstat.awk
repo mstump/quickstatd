@@ -8,6 +8,6 @@
 
 
 /^[0-9][0-9]\:[0-9][0-9]\:[0-9][0-9] [A-Z][A-Z] +[0-9]+/{
-   print "servers." hostname ".mpstat.cpu." $3 ".idle " $12 " " systime() | "nc " graphite_host " " graphite_port
+   print graphite_prefix ".servers." hostname ".mpstat.cpu." $3 ".idle " $12 " " systime() | "nc " graphite_host " " graphite_port
 }
 
